@@ -24,10 +24,6 @@
 
 # Ignore files in git archive (i.e. GitHub release builds)
 
-## Docker
-Dockerfile                              export-ignore
-.dockerignore                           export-ignore
-
 ## Travis
 .travis.yml                             export-ignore
 
