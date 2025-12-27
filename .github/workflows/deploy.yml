@@ -12,6 +12,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE: us-central1-docker.pkg.dev/rss-bridge-project/rss-bridge/rss-bridge:latest
 
     steps:
       - name: Checkout code
