@@ -1,0 +1,44 @@
+name: Deploy RSS-Bridge to Cloud Run
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: "projects/133185710978/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-deployer@rss-bridge-project.iam.gserviceaccount.com"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: rss-bridge-project
+          install_components: "gke-gcloud-auth-plugin"
+
+      - name: Build Docker image
+        run: |
+          IMAGE="us-central1-docker.pkg.dev/rss-bridge-project/rss-bridge/rss-bridge:latest"
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy rss-bridge \
+            --image $IMAGE \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated
