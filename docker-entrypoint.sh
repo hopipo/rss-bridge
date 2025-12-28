@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
 
 # --- Instagram cookies from ENV ---
@@ -9,8 +9,6 @@ if [ -n "$INSTAGRAM_COOKIES" ]; then
   chown www-data:www-data /app/config/instagram_cookies.txt
   chmod 600 /app/config/instagram_cookies.txt
 fi
-
-#!/usr/bin/env bash
 
 # - Find custom files (bridges, formats, whitelist, config.ini) in the /config folder
 # - Copy them to the respective folders in /app
