@@ -1,3 +1,15 @@
+#!/bin/sh
+set -e
+
+# --- Instagram cookies from ENV ---
+if [ -n "$INSTAGRAM_COOKIES" ]; then
+  echo "Writing Instagram cookies to config file"
+  mkdir -p /app/config
+  echo "$INSTAGRAM_COOKIES" > /app/config/instagram_cookies.txt
+  chown www-data:www-data /app/config/instagram_cookies.txt
+  chmod 600 /app/config/instagram_cookies.txt
+fi
+
 #!/usr/bin/env bash
 
 # - Find custom files (bridges, formats, whitelist, config.ini) in the /config folder
